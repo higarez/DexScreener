@@ -1,21 +1,13 @@
 import requests, random, sys, re, time, argparse, json, os, asyncio
-from termcolor import colored
 from web3 import Web3
 from uniswap import Uniswap
 from datetime import datetime
 from eth_utils import to_checksum_address
-from mnemonic import Mnemonic
-from bip32 import BIP32
 from telegram import Bot
 
-#cmdkommand="ScenTokenKontrol.py --add=0x01E189E3FEde85D40Fa97c56bF13e376De91f1d1"
-
-#my_address="0x2F3720ba89513CEB308f86a6aee8b271dEd97081"
 aktifsaat=2
 
-alinanusd=0.0
-toplamadet=0.0
-sleepy=3
+sleepy=2
 etherscanapikey=["VYCN5DQBDYBWNFMA4XXQM39PEKFGFNQU8G",
         "J857UTDF442WIIKWB596B385FG8AP43X9T",
         "DGSRHIBUXP4K57XZ8MCS6UHU2GAMR3V8QT",
@@ -119,12 +111,10 @@ def get_abi(address):
             sourcecode = data['result'][0]["SourceCode"]
             abi = data['result'][0]["ABI"]
             if sourcecode=="":
-                #print("Token Kontratı onaylanmamış!")
                 time.sleep(1)
             
             return abi
         except Exception as e:
-                #print(f" -(GetAbi)- Bir Hata oluştu :\n{e}\n")
                 continue
 def get_honeypot_is(token_add):
     url = f"https://api.honeypot.is/v2/IsHoneypot?address={token_address}"
@@ -133,12 +123,8 @@ def get_honeypot_is(token_add):
         data = response.json()    
         try:                
             unkrisk = data['simulationSuccess']
-            #print(unkrisk)
             if unkrisk == False:
                 time.sleep(sleepy)
-                #info = data['summary']['flags']#['description']
-                #print(info)
-                #print(f" {datetime.today().isoformat()} | {token_address} Unknown Error!")
                 data="0"
                 time.sleep(sleepy)
                 return data
@@ -148,7 +134,6 @@ def get_honeypot_is(token_add):
             code = data['code']
             if code == 404:                    
                 time.sleep(sleepy)
-                #print(f" {datetime.today().isoformat()} - {token_address} - No pairs, Retrying in {sleepy} second...")
                 data="0"
                 return data
         except:
@@ -156,22 +141,19 @@ def get_honeypot_is(token_add):
         return data
         
     except requests.exceptions.RequestException as e:
-        #print(f"    Does not Read {token_address}: {e}")
-        #time.sleep(1)
         data="0"
         return data
 
 async def send_message(sonucmetin):
-    CHANNEL_ID = '@dex_tarayici'
+    #CHANNEL_ID = '@dex_tarayici'
+    CHANNEL_ID = '@VoiceSniperGroup'
     message = f"{sonucmetin}\nhttps://dexscreener.com/ethereum/{token_address}"
-    # Mesajı asenkron olarak kanala gönder
     await bot.send_message(chat_id=CHANNEL_ID, text=message)
             
         
 def getdexinfo(token_address):
     try:
-        url=f"https://api.dexscreener.com/latest/dex/tokens/{token_address}"
-        #url=f"https://io.dexscreener.com/dex/log/amm/v4/uniswap/all/ethereum/{pair_address}?m={my_address}&c=1"
+        url=f"https://api.dexscreener.com/latest/dex/tokens/{token_address}"#url=f"https://io.dexscreener.com/dex/log/amm/v4/uniswap/all/ethereum/{pair_address}?m={my_address}&c=1"
         headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36"}
         
         while True:
@@ -181,47 +163,24 @@ def getdexinfo(token_address):
                     exit()
                     break
             try:                
-                # İsteği headers ile gönderiyoruz
-                #response = requests.get(url, headers=headers)
                 response = requests.get(url)
-                #response=response.text    
                 data = response.json() 
-                #print(data)
                 priceNative = data['pairs'][0]['priceNative']
-                #print(f"{priceNative}")
                 
                 priceUsd = data['pairs'][0]['priceUsd']
-               # print(f"\n\n\n\n{priceUsd}")
                 marketCap = data['pairs'][0]['marketCap']
-                #print(f"\n\n\n\n{marketCap}")
                 
                 websites = data['pairs'][0]['info']['websites']
-                #print(f"\n\n\n\n{websites}")
                 finalmetin=f"Price WETH: {priceNative}"+f"\nPrice USD: {priceUsd}"+f"\nMarket Cap: {marketCap}"
-                #print(finalmetin)
             
                 for item in websites:
-                    #print(item['url'])
                     finalmetin=finalmetin+f"\nWeb Sites: {item['url']}"
                 socials = data['pairs'][0]['info']['socials']
                 for item in socials:
-                    #print(item['url'])
                     finalmetin=finalmetin+f"\nSocial: {item['url']}"
-                #print(f"\n\n\n\n{socials}")
-                """
-                print(f"__________________________________")
-                print(f"---      Price WETH: {priceNative}       ")
-                print(f"---      Price USD: {priceUsd}       ")
-                print(f"---      Market Cap: {marketCap}       ")
-                print(f"__________________________________")
-                print(f"---      Web Sites: {websites}       ")     
-                print(f"---      Socials: {socials}       ")
-                """
                 return finalmetin
-                #exit()
                 break
             except Exception as e:
-                #print(f" -(GetDexInfo)- Bir Hata oluştu :\n{e}\n")
                 time.sleep(sleepy)
                 continue
     except Exception as e:
@@ -258,23 +217,18 @@ def getcontractinfo(token_add):
                     exit()
                     break
             try:
-                #uniswap_factory_address = "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45" #V3
                 uniswap_factory_address = "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f"  #V2
                 uniswap_router_abi=get_abi(uniswap_factory_address)
                 uniswap_router = web3.eth.contract(address=uniswap_factory_address, abi=uniswap_router_abi)                
                 weth_address = Web3.to_checksum_address("0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2")
                 pair_address = uniswap_router.functions.getPair(token_add, weth_address).call()
-                #weth_fac_address = "0xC02aaa39b223FE8D0A0e5C4F27eAD9083C756Cc2"  # Wrapped Ether (WETH)
                 if pair_address == '0x0000000000000000000000000000000000000000':
-                    #print(f"{(datetime.today().isoformat())} | - {token_add} - Token Uniswap'ta listelenmemiş.")
                     time.sleep(sleepy)
                     continue
                 elif pair_address=="":
-                    #print(f"{(datetime.today().isoformat())} | - {token_add} - Token Uniswap'ta listelenmemiş.\nPair Adresi Boş.")
                     time.sleep(sleepy)
                     continue
                 else:
-                    #print(f"{datetime.today().isoformat()} | - {token_add} - Token Uniswap'ta listelenmiş.\nPair adresi: {pair_address}")
                     return pair_address, uniswap_router_abi
                     break
             except Exception as e:
@@ -288,7 +242,6 @@ def check_token(token_address,pair_address,finalmetin):
         try:
             hours, minutes, seconds = map(int, (datetime.today().isoformat()[11:19]).split(':'))
             simdikizaman= hours * 3600 + minutes * 60 + seconds
-            #print(simdikizaman-baslangictarihi)
             if simdikizaman-baslangictarihi>3600*aktifsaat:
                 exit()
                 break
@@ -324,8 +277,6 @@ def check_token(token_address,pair_address,finalmetin):
                 holders = data['holderAnalysis']['holders']
             except:
                 holders=0
-                #print(f"XXXXXXXXXX Not Enoght Holder XXXXXXXXXX")
-                #sonucmetin=sonucmetin+f"XXXXXXXXXX Not Enoght Holder XXXXXXXXXX\n"
             if risk_level>1:
                 color="red"
                 print(f"XXXXXXXXXX {risk_level} Risk Level XXXXXXXXXX")
@@ -342,48 +293,19 @@ def check_token(token_address,pair_address,finalmetin):
                 color="red"
                 print(f"XXXXXXXXXX Tranfer Tax {transferTax} XXXXXXXXXX")
                 sonucmetin=sonucmetin+f"XXXXXXXXXX Tranfer Tax {transferTax} XXXXXXXXXX\n"
-            # Çıktıları yazdırma           
-            """
-            print(f"__________________________________")
-            print(f"---      Token Name: {token_name}       ")
-            print(f"---      Token Symbol: {token_symbol}       ")
-            print(f"---      Token Address: {token_address}       ")
-            print(f"---      Pair Address: {pair_address}       ")     
-            print(f"---      Is Honeypot: {is_honeypot}       ")
-            print(f"---      Risk: {risk}       ")
-            print(f"---      Risk Level: {risk_level}       ")
-            print(f"---      Holders: {holders}       ")
-            print(f"__________________________________")
-            print(f"---      ---BuyTax: -- {buyTax} --       ")
-            print(f"---      ---SellTax: -- {sellTax} --       ")
-            print(f"---      ---TransferTax: -- {transferTax} --       ")
-            print(f"---      Liquidity: {liquidity}       ")       
-            print(f"__________________________________")"""
+            
             sonucmetin=sonucmetin+f"https://dexscreener.com/ethereum/{pair_address}\n"
             contrat_owner = get_ownerinfo(token_address)
             sonucmetin=sonucmetin+f"Token Symbol: {token_symbol}\n"+f"Token Address: {token_address}\n"+f"Pair Address: {pair_address}\n"+f"Is Honeypot: {is_honeypot}\n"+f"Risk: {risk}\n"+f"Risk Level: {risk_level}\n"+f"Holders: {holders}\n\n"+f"---BuyTax: -- %{buyTax} --\n"+f"---SellTax: -- %{sellTax} --\n"+f"---TransferTax: -- %{transferTax} --\n"+f"\nLiquidity: {liquidity}\nContrat Owner: {contrat_owner}"            
             
             if color == "red":
-                #print(f"{datetime.today().isoformat()}  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
                 sonucmetin=sonucmetin+f"\nXXXXXXXXXX HONEY POT ! XXXXXXXXXX"
-                #with open("HoneyPot_.txt", "a") as f:
-                #    f.write(sonucmetin + "\n")    
             try:
-                #print("__________________________________")
-                #add_token_and_call_checker(token_address)
-                
-                #print(sonucmetin)        
-                
                 sonucmetin=sonucmetin+f"\n__________________________________\n"    
                 sonucmetin=sonucmetin+finalmetin+"\n----- SORUMLULUK SENDE -----"
-                #os.system(f'firefox.exe "https://dexscreener.com/ethereum/{token_address}"')
-                #os.system(f'firefox.exe "https://app.uniswap.org/swap?outputCurrency={token_address}&chain=ethereum"')
             except Exception as e:
                 time.sleep(sleepy)
-                #print(f"Dosya Yazma Hatası {e}")
                 continue
-            
-                
             try:
                 with open("DexScan_.txt", "a") as f:
                     f.write(f"{datetime.today().isoformat()};{sonucmetin}\n")
@@ -392,55 +314,34 @@ def check_token(token_address,pair_address,finalmetin):
             asyncio.run(send_message(sonucmetin))
             exit()
             break
-            if is_honeypot==False:
-                print(f"    Not HoneyPot {token_name}    ")     
-                print(f"\n{datetime.today().isoformat()} | {token_address}")
-                #exit()
-                break
-
-            else:
-                print(f"!!!!!!!!!!!!!!X {token_name} HONEYPOT!  X!!!!!!!!!!!!!!")
-                print(f"\n{datetime.today().isoformat()} | {token_address}")
-                #exit()                 
-                break
-                
         except Exception as e:
             print(f" -(Check_Token)- Bir Hata oluştu :\n{e}\n")
  
 if __name__ == "__main__":
-    # Argümanları almak için argparse kullanıyoruz
     parser = argparse.ArgumentParser(description="Check if a token is a honeypot")
     parser.add_argument("--add", type=str, required=True, help="The token address to check")
     
     args = parser.parse_args()
-    
-    # Token adresini argüman olarak alıyoruz
     token_address = args.add
     connection=True
-    #pair_address=""
     firststart=True
     while True: 
         try:
             web3 = Web3(Web3.HTTPProvider(random.choice(URLS)))       
             if not web3.is_connected():
                 connection=False
-                #print("Web 3 Connection error!")
                 continue
             else:
                 token_address = Web3.to_checksum_address(token_address)
                 if firststart==True:
                     pair_address, uniswap_router_abi=getcontractinfo(token_address)
                     firststart=False
-                    print("First Start, Take Control!")
-                #print("Devamkee..")
-                #telegramTOKEN = "7849230972:AAHjBYSHEjQYkU0SLLdq8dLLxsatleGeXNs" Voice Sniper Bot
-                telegramTOKEN = "7267134571:AAGdsu-PMVG7q_QRHWpKDzi-wql46YBeBEc"
+                telegramTOKEN = "7849230972:AAHjBYSHEjQYkU0SLLdq8dLLxsatleGeXNs"
                 bot = Bot(token=telegramTOKEN)
                 finalmetin = getdexinfo(token_address)
                 check_token(token_address,pair_address,finalmetin)
                 exit()
                 break
-                #getprice(web3,pair_address,token_name,alinanusd,toplamadet)
                     
         except Exception as e:
             print(f"Failed to connect!\n{e}")
