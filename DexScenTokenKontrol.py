@@ -1,8 +1,11 @@
-import requests, random, time, argparse, json, os, asyncio
+import requests, random, sys, re, time, argparse, json, os, asyncio
+from termcolor import colored
 from web3 import Web3
 from uniswap import Uniswap
 from datetime import datetime
 from eth_utils import to_checksum_address
+from mnemonic import Mnemonic
+from bip32 import BIP32
 from telegram import Bot
 
 aktifsaat=3
@@ -104,85 +107,76 @@ baslangictarihi= hours * 3600 + minutes * 60 + seconds
 def get_abi(address):
     while True:
         try:
-            #url = f"https://api.etherscan.io/api?module=contract&action=getsourcecode&address={address}&apikey={random.choice(etherscanapikey)}"
             headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36"}
             response = requests.get(f"https://api.etherscan.io/api?module=contract&action=getsourcecode&address={address}&apikey={random.choice(etherscanapikey)}", headers=headers)
             response = response.json()    
             sourcecode = response['result'][0]["SourceCode"]
             response = response['result'][0]["ABI"]
             if sourcecode=="":
+                #print("Token Kontratı onaylanmamış!")
                 time.sleep(1)
-            del sourcecode
+            del sourcecode, headers
             return response
         except Exception as e:
+                #print(f" -(GetAbi)- Bir Hata oluştu :\n{e}\n")
                 continue
 def get_honeypot_is(token_add):
-    #url = f"https://api.honeypot.is/v2/IsHoneypot?address={token_address}"
     try:
         response = requests.get(f"https://api.honeypot.is/v2/IsHoneypot?address={token_address}")
         response = response.json()    
         try:                
             unkrisk = response['simulationSuccess']
+            #print(unkrisk)
             if unkrisk == False:
                 time.sleep(sleepy)
                 response="0"
                 time.sleep(sleepy)
                 del unkrisk
                 return response
-        except:
+        except:            
             pass                 
         try:
             code = response['code']
             if code == 404:                    
                 time.sleep(sleepy)
                 response="0"
-                del code
                 return response
-            
         except:
             return response
         return response
         
     except requests.exceptions.RequestException as e:
-        response="0"
-        return response
+        data="0"
+        return data
 
 async def send_message(sonucmetin):
-    #CHANNEL_ID = '@dex_tarayici'
-    #CHANNEL_ID = '@VoiceSniperGroup'
-    await bot.send_message(chat_id='@VoiceSniperGroup', text=sonucmetin)
-    del sonucmetin
+    await bot.send_message(chat_id='@dex_tarayici', text=sonucmetin)
+            
         
 def getdexinfo(token_address):
     try:
-        #url=f"https://api.dexscreener.com/latest/dex/tokens/{token_address}"
-        #url=f"https://io.dexscreener.com/dex/log/amm/v4/uniswap/all/ethereum/{pair_address}?m={my_address}&c=1"
-        #headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36"}
         while True:
             hours, minutes, seconds = map(int, (datetime.today().isoformat()[11:19]).split(':'))
-            simdikizaman = hours * 3600 + minutes * 60 + seconds
+            simdikizaman= hours * 3600 + minutes * 60 + seconds
             if simdikizaman-baslangictarihi>3600*aktifsaat:
                     exit()
                     break
-            del simdikizaman
             try:                
                 response = requests.get(f"https://api.dexscreener.com/latest/dex/tokens/{token_address}")
                 response = response.json() 
                 priceNative = response['pairs'][0]['priceNative']
-                
                 priceUsd = response['pairs'][0]['priceUsd']
                 marketCap = response['pairs'][0]['marketCap']
-                
                 websites = response['pairs'][0]['info']['websites']
                 finalmetin=f"Price WETH: {priceNative}"+f"\nPrice USD: {priceUsd}"+f"\nMarket Cap: {marketCap}"
+            
                 for item in websites:
                     finalmetin=finalmetin+f"\nWeb Sites: {item['url']}"
                 socials = response['pairs'][0]['info']['socials']
                 for item in socials:
                     finalmetin=finalmetin+f"\nSocial: {item['url']}"
-                    
+
                 del priceNative, priceUsd,marketCap,websites,socials,response
-                    
                 return finalmetin
                 break
             except Exception as e:
@@ -194,16 +188,13 @@ def getdexinfo(token_address):
 def get_ownerinfo(token_address):
     while True:
         try:
-            #url=f"https://etherscan.io/readcontract?a={token_address}"
             headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36"}
             response = requests.get(f"https://etherscan.io/readcontract?a={token_address}", headers=headers)
             response=response.text
-            #"href=\"/address/"
             index = response.find('href="/address/')
             response=response[index+15:]
             index = response.find('" target="_parent">')
             response=response[:index]
-            #print(response)
             del headers, index
             return response
         except Exception as e:
@@ -223,8 +214,6 @@ def getcontractinfo(token_add):
                     break
             del simdikizaman
             try:
-                #uniswap_factory_address = "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f"  #V2
-                #uniswap_router_abi=get_abi("0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f")
                 uniswap_router = web3.eth.contract(address="0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f", abi=get_abi("0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f"))                
                 weth_address = Web3.to_checksum_address("0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2")
                 pair_address = uniswap_router.functions.getPair(token_add, weth_address).call()
@@ -244,20 +233,25 @@ def getcontractinfo(token_add):
                     continue
 
 def check_token(token_address,pair_address,finalmetin):
+    counter=0
     while True:
         try:
             hours, minutes, seconds = map(int, (datetime.today().isoformat()[11:19]).split(':'))
-            simdikizaman = hours * 3600 + minutes * 60 + seconds
+            simdikizaman= hours * 3600 + minutes * 60 + seconds
             if simdikizaman-baslangictarihi>3600*aktifsaat:
                 exit()
                 break
-            del simdikizaman
+            if counter >200:
+                time.sleep(sleepy)
+                exit()
+                break
+            counter+=1
             color="green"
             data=get_honeypot_is(token_address)
             if data=="0":
                 time.sleep(sleepy)
                 continue
-            sonucmetin=""
+            sonucmetin=f"{datetime.today().isoformat()}\n"
             token_name = data['token']['name']
             token_symbol = data['token']['symbol']
             is_honeypot = data['honeypotResult']['isHoneypot']
@@ -279,7 +273,8 @@ def check_token(token_address,pair_address,finalmetin):
                 holders = data['holderAnalysis']['holders']
             except:
                 holders=0
-            del data
+                #print(f"XXXXXXXXXX Not Enoght Holder XXXXXXXXXX")
+                #sonucmetin=sonucmetin+f"XXXXXXXXXX Not Enoght Holder XXXXXXXXXX\n"
             if risk_level>1:
                 color="red"
                 print(f"XXXXXXXXXX {risk_level} Risk Level XXXXXXXXXX")
@@ -296,13 +291,12 @@ def check_token(token_address,pair_address,finalmetin):
                 color="red"
                 print(f"XXXXXXXXXX Tranfer Tax {transferTax} XXXXXXXXXX")
                 sonucmetin=sonucmetin+f"XXXXXXXXXX Tranfer Tax {transferTax} XXXXXXXXXX\n"
-            
             sonucmetin=sonucmetin+f"https://dexscreener.com/ethereum/{pair_address}\n"
             contrat_owner = get_ownerinfo(token_address)
             sonucmetin=sonucmetin+f"Token Name: {token_name}\nToken Symbol: {token_symbol}\n"+f"Token Address: {token_address}\n"+f"Pair Address: {pair_address}\n"+f"Is Honeypot: {is_honeypot}\n"+f"Risk: {risk}\n"+f"Risk Level: {risk_level}\n"+f"Holders: {holders}\n\n"+f"---BuyTax: -- %{buyTax} --\n"+f"---SellTax: -- %{sellTax} --\n"+f"---TransferTax: -- %{transferTax} --\n"+f"\nLiquidity: {liquidity}\nContrat Owner: {contrat_owner}"            
-            
+             
             if color == "red":
-                sonucmetin=sonucmetin+f"\nXXXXXXXXXX HONEY POT ! XXXXXXXXXX"
+                sonucmetin=sonucmetin+f"\nXXXXXXXXXX HONEY POT ! XXXXXXXXXX"  
             try:
                 sonucmetin=sonucmetin+f"\n__________________________________\n"    
                 sonucmetin=sonucmetin+finalmetin+"\n----- SORUMLULUK SENDE -----"
@@ -311,8 +305,7 @@ def check_token(token_address,pair_address,finalmetin):
                 continue
             try:
                 with open("DexScan_.txt", "a") as f:
-                    f.write(f"{datetime.today().isoformat()}\n;{sonucmetin}\n")
-                    f.close
+                    f.write(f"{datetime.today().isoformat()};{sonucmetin}\n")
             except Exception as e:
                 print(e)
             del contrat_owner, color, holders, liquidity, index, transferTax, sellTax, buyTax, risk_level, risk, token_name, token_symbol, token_address, pair_address, is_honeypot,
@@ -327,6 +320,7 @@ if __name__ == "__main__":
     parser.add_argument("--add", type=str, required=True, help="The token address to check")
     
     args = parser.parse_args()
+    
     token_address = args.add
     connection=True
     firststart=True
@@ -341,9 +335,10 @@ if __name__ == "__main__":
                 if firststart==True:
                     pair_address=getcontractinfo(token_address)
                     firststart=False
-                #telegramTOKEN = "7267134571:AAGdsu-PMVG7q_QRHWpKDzi-wql46YBeBEc" advo gem bot
+                    print("First Start, Take Control!")
+                #print("Devamkee..")
                 #telegramTOKEN = "7849230972:AAHjBYSHEjQYkU0SLLdq8dLLxsatleGeXNs" Voice Sniper Bot
-                
+                #telegramTOKEN = "7267134571:AAGdsu-PMVG7q_QRHWpKDzi-wql46YBeBEc"                
                 bot = Bot(token="7267134571:AAGdsu-PMVG7q_QRHWpKDzi-wql46YBeBEc")
                 finalmetin = getdexinfo(token_address)
                 check_token(token_address,pair_address,finalmetin)
