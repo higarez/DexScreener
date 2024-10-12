@@ -8,7 +8,7 @@ from mnemonic import Mnemonic
 from bip32 import BIP32
 from telegram import Bot
 
-aktifsaat=3
+aktifsaat=4
 
 sleepy=2
 etherscanapikey=["VYCN5DQBDYBWNFMA4XXQM39PEKFGFNQU8G",
