@@ -1,8 +1,7 @@
 requests
 termcolor
-web3
+web3==6.9.0
 uniswap-python
 eth-utils
-mnemonic
-bip32
+lru-dict
 python-telegram-bot
