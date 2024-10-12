@@ -5,3 +5,5 @@ uniswap-python
 eth-utils
 lru-dict
 python-telegram-bot
+paramiko
+argparse
