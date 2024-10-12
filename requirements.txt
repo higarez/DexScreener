@@ -1,0 +1,8 @@
+requests
+termcolor
+web3
+uniswap-python
+eth-utils
+mnemonic
+bip32
+python-telegram-bot
