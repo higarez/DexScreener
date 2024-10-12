@@ -276,6 +276,8 @@ def check_token(token_address,pair_address,finalmetin):
                 color="red"
                 print(f"XXXXXXXXXX {risk_level} Risk Level XXXXXXXXXX")
                 sonucmetin=sonucmetin+f"XXXXXXXXXX {risk_level} Risk Level XXXXXXXXXX\n"
+                exit()
+                break
             if buyTax>10:
                 color="red"
                 print(f"XXXXXXXXXX Buy Tax {buyTax} XXXXXXXXXX")
