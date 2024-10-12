@@ -3,7 +3,7 @@ from web3 import Web3
 from datetime import datetime
 
 sleepy=0.5
-hidden=True
+hidden=False
 
 
 URLS = ["https://mainnet.infura.io/v3/fa90fd8d679a401f8fd45a271760b987",
@@ -63,33 +63,30 @@ URLS = ["https://mainnet.infura.io/v3/fa90fd8d679a401f8fd45a271760b987",
         "https://eth-mainnet.g.alchemy.com/v2/h_uqgT30jDgXz8SbbxGRRNjqNKkp1JUb",
         "https://eth-mainnet.g.alchemy.com/v2/ttVre8nxMeJqtCWfACyJTsqRGzTPjrg_",
         "https://eth-mainnet.g.alchemy.com/v2/P-JbSaH0IXU8ByHqZ3NTqFMoQuGwZSuc"]
-		
-        
 
-        
+
 def add_token_and_call_checker(contract_address):
         try:
             with open("Subprocess.txt", "a") as f:
                 f.write(f"{datetime.today().isoformat()};{contract_address}\n")
+                f.close()
         except:
             try:
                 with open("SubprocessAlt_.txt", "a") as f:
                     f.write(f"{datetime.today().isoformat()};{contract_address}\n")
+                    f.close()
             except Exception as e:
                 print(e)
         
-        if hidden==True:
-            CREATE_NO_WINDOW = 0x08000000
-
-            # Python scriptini sessizce ve pencere açmadan çalıştırma
+        if hidden:
+            
             subprocess.Popen(
-                [sys.executable, 'DexScenTokenKontrol.py', f'--add={contract_address}'],
+                [sys.executable, 'linux_komut_gonderme.py', f'--add={contract_address}'],
                 stdout=subprocess.DEVNULL,  # Standart çıktıyı sessize al
                 stderr=subprocess.DEVNULL,  # Hata çıktısını sessize al
-                creationflags=CREATE_NO_WINDOW  # Komut penceresinin açılmasını engelle
             )
         else:
-            os.system(f'start cmd /k "python DexScenTokenKontrol.py --add={contract_address}"')
+            os.system(f'start cmd /k "python linux_komut_gonderme.py --add={contract_address}"')
 
 def monitor_blocks():
     while True:
