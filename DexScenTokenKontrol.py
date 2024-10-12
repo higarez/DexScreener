@@ -5,7 +5,7 @@ from datetime import datetime
 from eth_utils import to_checksum_address
 from telegram import Bot
 
-aktifsaat=2
+aktifsaat=3
 
 sleepy=2
 etherscanapikey=["VYCN5DQBDYBWNFMA4XXQM39PEKFGFNQU8G",
