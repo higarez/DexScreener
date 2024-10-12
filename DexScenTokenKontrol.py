@@ -1,16 +1,13 @@
 import requests, random, sys, re, time, argparse, json, os, asyncio
-from termcolor import colored
 from web3 import Web3
 from uniswap import Uniswap
 from datetime import datetime
 from eth_utils import to_checksum_address
-from mnemonic import Mnemonic
-from bip32 import BIP32
 from telegram import Bot
 
-aktifsaat=4
+aktifsaat=3
 
-sleepy=2
+sleepy=3
 etherscanapikey=["VYCN5DQBDYBWNFMA4XXQM39PEKFGFNQU8G",
         "J857UTDF442WIIKWB596B385FG8AP43X9T",
         "DGSRHIBUXP4K57XZ8MCS6UHU2GAMR3V8QT",
