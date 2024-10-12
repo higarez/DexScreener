@@ -248,7 +248,7 @@ def check_token(token_address,pair_address,finalmetin):
             if data=="0":
                 time.sleep(sleepy)
                 continue
-            sonucmetin=f"{datetime.today().isoformat()}\n"
+            sonucmetin=""
             token_name = data['token']['name']
             token_symbol = data['token']['symbol']
             is_honeypot = data['honeypotResult']['isHoneypot']
