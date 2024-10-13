@@ -36,28 +36,26 @@ def get_free_memory(ip, username, password):
     return None
     
  
-def run_remote_command(hostname, username, password, token_address):    
-        try:
-            # SSH istemcisi oluştur
-            client = paramiko.SSHClient()
-            client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            #commands = f"cd DexScreener && python3 DexScenTokenKontrol.py --add={token_address}"
+def run_remote_command(hostname, username, password, token_address):
+    try:
+        # SSH istemcisi oluştur
+        client = paramiko.SSHClient()
+        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        #commands = f"cd DexScreener && python3 DexScenTokenKontrol.py --add={token_address}"
 
-            # Sunucuya bağlan
-            client.connect(hostname, username=username, password=password)
+        # Sunucuya bağlan
+        client.connect(hostname, username=username, password=password)
             
-            # Komutu çalıştır
-            #stdin, stdout, stderr = client.exec_command(commands)
-            stdin, stdout, stderr = client.exec_command(f"cd DexScreener && python3 DexScenTokenKontrol.py --add={token_address}")
-            client.close()
-            #exit()
-            # Çıktıyı oku
-            print(stdout.read().decode())
-            print(stderr.read().decode())
-            break
-        except Exception as e:
-            print(f"Hata: {e}")
-            continue
+        # Komutu çalıştır
+        #stdin, stdout, stderr = client.exec_command(commands)
+        stdin, stdout, stderr = client.exec_command(f"cd DexScreener && python3 DexScenTokenKontrol.py --add={token_address}")
+        client.close()
+        #exit()
+        # Çıktıyı oku
+        print(stdout.read().decode())
+        print(stderr.read().decode())
+    except Exception as e:
+        print(f"Hata: {e}")
         
         
 def main(token_address):
