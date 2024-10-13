@@ -5,7 +5,7 @@ from datetime import datetime
 from eth_utils import to_checksum_address
 from telegram import Bot
 
-aktifsaat=3
+aktifsaat=1
 
 sleepy=3
 etherscanapikey=["VYCN5DQBDYBWNFMA4XXQM39PEKFGFNQU8G",
@@ -108,15 +108,16 @@ def get_abi(address):
             response = requests.get(f"https://api.etherscan.io/api?module=contract&action=getsourcecode&address={address}&apikey={random.choice(etherscanapikey)}", headers=headers)
             response = response.json()    
             sourcecode = response['result'][0]["SourceCode"]
-            response = response['result'][0]["ABI"]
+            abi = response['result'][0]["ABI"]
             if sourcecode=="":
                 #print("Token Kontratı onaylanmamış!")
                 time.sleep(1)
-            del sourcecode, headers
-            return response
+            del sourcecode, headers ,response
+            return abi
         except Exception as e:
-                #print(f" -(GetAbi)- Bir Hata oluştu :\n{e}\n")
+                print(f" -(GetAbi)- Bir Hata oluştu :\n{e}\n")
                 continue
+                
 def get_honeypot_is(token_add):
     try:
         response = requests.get(f"https://api.honeypot.is/v2/IsHoneypot?address={token_address}")
@@ -148,8 +149,24 @@ def get_honeypot_is(token_add):
 
 async def send_message(sonucmetin):
     await bot.send_message(chat_id='@dex_tarayici', text=sonucmetin)
-            
-        
+    
+async def send_elite_msg(sonucmetin):
+    await bot.send_message(chat_id='@AdvoGemAlpha', text=sonucmetin)
+    
+def creator_scan(token_address):
+    while True:
+        try:
+            headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36"}
+            response = requests.get(f"https://api.etherscan.io/api?module=contract&action=getcontractcreation&contractaddresses={token_address}&apikey={random.choice(etherscanapikey)}", headers=headers)
+            response = response.json()    
+            contractCreator = response['result'][0]["contractCreator"]            
+            response = requests.get(f"https://api.etherscan.io/api?module=account&action=balance&address={contractCreator}&tag=latest&apikey={random.choice(etherscanapikey)}", headers=headers)
+            balance = response['result']
+            del response, headers
+            return contractCreator, balance
+        except Exception as e:
+            continue
+
 def getdexinfo(token_address):
     try:
         while True:
@@ -312,27 +329,31 @@ def check_token(token_address,pair_address,finalmetin):
                     f.write(f"{datetime.today().isoformat()};{sonucmetin}\n")
             except Exception as e:
                 print(e)
-            del contrat_owner, color, holders, liquidity, index, transferTax, sellTax, buyTax, risk_level, risk, token_name, token_symbol, token_address, pair_address, is_honeypot,
-            asyncio.run(send_message(sonucmetin))
-            exit()
+            #asyncio.run(send_message(sonucmetin))
+            
+            creator_add, creator_balance = creator_scan(token_address)
+            sonucmetin=sonucmetin+f"\nContrat Creator: {creator_add}\nCreator Balance: {float(creator_balance)/10**18} ETH"            
+            asyncio.run(send_elite_msg(sonucmetin))
+            del contrat_owner, color, holders, liquidity, index, transferTax, sellTax, buyTax, risk_level, risk, token_name, token_symbol, token_address, pair_address, is_honeypot, sonucmetin
+            #exit()
             break
         except Exception as e:
             print(f" -(Check_Token)- Bir Hata oluştu :\n{e}\n")
+            pass
  
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Check if a token is a honeypot")
     parser.add_argument("--add", type=str, required=True, help="The token address to check")
-    
     args = parser.parse_args()
     
     token_address = args.add
-    connection=True
     firststart=True
     while True: 
         try:
             web3 = Web3(Web3.HTTPProvider(random.choice(URLS)))       
             if not web3.is_connected():
-                connection=False
+                #print("Web3 Bağlantı Hatası")
+                time.sleep(sleepy)
                 continue
             else:
                 token_address = Web3.to_checksum_address(token_address)
@@ -346,7 +367,7 @@ if __name__ == "__main__":
                 bot = Bot(token="7267134571:AAGdsu-PMVG7q_QRHWpKDzi-wql46YBeBEc")
                 finalmetin = getdexinfo(token_address)
                 check_token(token_address,pair_address,finalmetin)
-                exit()
+                #exit()
                 break
                     
         except Exception as e:
