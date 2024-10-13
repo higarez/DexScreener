@@ -321,6 +321,7 @@ def check_token(token_address,pair_address,finalmetin):
             contrat_owner = get_ownerinfo(token_address)
             try:
                 if contrat_owner.find('000000')<0:
+                    sonucmetin=sonucmetin+f"\n\nXXXXXXXXXXXXXXX OWNER NOT RENOUNCED ! XXXXXXXXXXXXXXX\n"
                     color=False
             except:
                 pass
@@ -331,7 +332,7 @@ def check_token(token_address,pair_address,finalmetin):
                 sonucmetin=sonucmetin+finalmetin+"\n----- ALL Liability is YOURS (DYOR!) -----"
                 asyncio.run(send_message(sonucmetin))
             else:
-                sonucmetin=sonucmetin+f"\nXXXXXXXXXX HONEY POT ! XXXXXXXXXX"
+                sonucmetin=sonucmetin+f"\n\nXXXXXXXXXXXXXXX HONEY POT ! XXXXXXXXXXXXXXX\n"
                 sonucmetin=sonucmetin+finalmetin+"\n----- ALL Liability is YOURS (DYOR!) -----"
                 #exit()
 
