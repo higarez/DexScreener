@@ -357,8 +357,8 @@ if __name__ == "__main__":
     
     token_address = args.add
     firststart=True
-    while True: 
-        try:
+    try:
+        while True:
             web3 = Web3(Web3.HTTPProvider(random.choice(URLS)))       
             if not web3.is_connected():
                 #print("Web3 Bağlantı Hatası")
@@ -376,5 +376,5 @@ if __name__ == "__main__":
                 sonucmetin = check_token(token_address,pair_address,finalmetin)                
                 creator_scan(token_address, sonucmetin)
                 break
-        except Exception as e:
+    except Exception as e:
             print(f"Failed to connect!\n{e}")
