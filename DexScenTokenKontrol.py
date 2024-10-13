@@ -173,7 +173,8 @@ def getdexinfo(token_address):
             hours, minutes, seconds = map(int, (datetime.today().isoformat()[11:19]).split(':'))
             simdikizaman= hours * 3600 + minutes * 60 + seconds
             if simdikizaman-baslangictarihi>3600*aktifsaat:
-                    exit()
+                    #exit()
+                    del simdikizaman
                     break
             try:                
                 response = requests.get(f"https://api.dexscreener.com/latest/dex/tokens/{token_address}")
@@ -224,9 +225,9 @@ def getcontractinfo(token_add):
             hours, minutes, seconds = map(int, (datetime.today().isoformat()[11:19]).split(':'))
             simdikizaman= hours * 3600 + minutes * 60 + seconds
             if simdikizaman-baslangictarihi>3600*aktifsaat:
-                    exit()
+                    #exit()
+                    del simdikizaman
                     break
-            del simdikizaman
             try:
                 uniswap_router = web3.eth.contract(address="0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f", abi=get_abi("0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f"))                
                 weth_address = Web3.to_checksum_address("0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2")
@@ -253,11 +254,12 @@ def check_token(token_address,pair_address,finalmetin):
             hours, minutes, seconds = map(int, (datetime.today().isoformat()[11:19]).split(':'))
             simdikizaman= hours * 3600 + minutes * 60 + seconds
             if simdikizaman-baslangictarihi>3600*aktifsaat:
-                exit()
+                #exit()
+                del simdikizaman
                 break
             if counter >200:
                 time.sleep(sleepy)
-                exit()
+                #exit()
                 break
             counter+=1
             color="green"
@@ -293,7 +295,7 @@ def check_token(token_address,pair_address,finalmetin):
                 color="red"
                 print(f"XXXXXXXXXX {risk_level} Risk Level XXXXXXXXXX")
                 sonucmetin=sonucmetin+f"XXXXXXXXXX {risk_level} Risk Level XXXXXXXXXX\n"
-                exit()
+                #exit()
                 break
             if buyTax>10:
                 color="red"
@@ -311,7 +313,7 @@ def check_token(token_address,pair_address,finalmetin):
             contrat_owner = get_ownerinfo(token_address)
             try:
                 if contrat_owner.find('000000')<0:
-                    exit()
+                    break
             except:
                 pass
             sonucmetin=sonucmetin+f"Token Name: {token_name}\nToken Symbol: {token_symbol}\n"+f"Token Address: {token_address}\n"+f"Pair Address: {pair_address}\n"+f"Is Honeypot: {is_honeypot}\n"+f"Risk: {risk}\n"+f"Risk Level: {risk_level}\n"+f"Holders: {holders}\n\n"+f"---BuyTax: -- %{buyTax} --\n"+f"---SellTax: -- %{sellTax} --\n"+f"---TransferTax: -- %{transferTax} --\n"+f"\nLiquidity: {liquidity}\nContrat Owner: {contrat_owner}"            
