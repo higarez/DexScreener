@@ -147,12 +147,14 @@ def get_honeypot_is(token_add):
         return data
 
 async def send_message(sonucmetin):
+    time.sleep(1)
     await bot.send_message(chat_id='@dex_tarayici', text=sonucmetin)
     
 async def send_elite_msg(sonucmetin):
+    time.sleep(1)
     await bot.send_message(chat_id='@AdvoGemAlpha', text=sonucmetin)
     
-def creator_scan(token_address):
+def creator_scan(token_address,sonucmetin):
     while True:
         try:
             headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36"}
@@ -164,7 +166,10 @@ def creator_scan(token_address):
             response = response.json() 
             balance = response['result']
             del  response, headers
-            return contractCreator, balance
+            print(float(balance))
+            finalmetin=sonucmetin+f"\nContrat Creator: {contractCreator}\nCreator Balance: {float(balance)/10**18} ETH"
+            asyncio.run(send_elite_msg(finalmetin))
+            break
         except Exception as e:
             print(f"-(Creator_Scan)- Bir Hata oluştu :\n{e}\n")
             continue
@@ -334,12 +339,9 @@ def check_token(token_address,pair_address,finalmetin):
             except Exception as e:
                 print(e)
             asyncio.run(send_message(sonucmetin))
-            
-            creator_add, creator_balance = creator_scan(token_address)
-            sonucmetin=sonucmetin+f"\nContrat Creator: {creator_add}\nCreator Balance: {float(creator_balance)/10**18} ETH"            
-            asyncio.run(send_elite_msg(sonucmetin))
-            del contrat_owner, color, holders, liquidity, index, transferTax, sellTax, buyTax, risk_level, risk, token_name, token_symbol, token_address, pair_address, is_honeypot, sonucmetin, creator_add, creator_balance
+            del contrat_owner, color, holders, liquidity, index, transferTax, sellTax, buyTax, risk_level, risk, token_name, token_symbol, token_address, pair_address, is_honeypot
             #exit()
+            return sonucmetin
             break
         except Exception as e:
             print(f" -(Check_Token)- Bir Hata oluştu :\n{e}\n")
@@ -370,9 +372,8 @@ if __name__ == "__main__":
                 #telegramTOKEN = "7267134571:AAGdsu-PMVG7q_QRHWpKDzi-wql46YBeBEc"                
                 bot = Bot(token="7267134571:AAGdsu-PMVG7q_QRHWpKDzi-wql46YBeBEc")
                 finalmetin = getdexinfo(token_address)
-                check_token(token_address,pair_address,finalmetin)
-                #exit()
+                sonucmetin = check_token(token_address,pair_address,finalmetin)                
+                creator_scan(token_address,sonucmetin)
                 break
-                    
         except Exception as e:
             print(f"Failed to connect!\n{e}")
