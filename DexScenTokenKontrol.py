@@ -272,7 +272,7 @@ def check_token(token_address,pair_address,finalmetin):
                 #exit()
                 break
             counter+=1
-            color="green"
+            color=True
             data=get_honeypot_is(token_address)
             if data=="0":
                 time.sleep(sleepy)
@@ -290,10 +290,10 @@ def check_token(token_address,pair_address,finalmetin):
             index = liquidity.find('.')
             liquidity=float(liquidity[:index])
             
-            if liquidity<100:
-                color="red"
-                print(f"XXXXXXXXXX Not Enoght Liqudity XXXXXXXXXX")
-                sonucmetin=sonucmetin+"XXXXXXXXXX Not Enoght Liqudity XXXXXXXXXX\n"
+            #if liquidity<100:
+                #color="red"
+                #print(f"XXXXXXXXXX Not Enoght Liqudity XXXXXXXXXX")
+                #sonucmetin=sonucmetin+"XXXXXXXXXX Not Enoght Liqudity XXXXXXXXXX\n"
                 
             try:            
                 holders = data['holderAnalysis']['holders']
@@ -302,41 +302,39 @@ def check_token(token_address,pair_address,finalmetin):
                 #print(f"XXXXXXXXXX Not Enoght Holder XXXXXXXXXX")
                 #sonucmetin=sonucmetin+f"XXXXXXXXXX Not Enoght Holder XXXXXXXXXX\n"
             if risk_level>1:
-                color="red"
+                color=False
                 print(f"XXXXXXXXXX {risk_level} Risk Level XXXXXXXXXX")
                 sonucmetin=sonucmetin+f"XXXXXXXXXX {risk_level} Risk Level XXXXXXXXXX\n"
-                #exit()
-                break
             if buyTax>10:
-                color="red"
+                color=False
                 print(f"XXXXXXXXXX Buy Tax {buyTax} XXXXXXXXXX")
                 sonucmetin=sonucmetin+f"XXXXXXXXXX Buy Tax {buyTax} XXXXXXXXXX\n"
             if sellTax>10:
-                color="red"
+                color=False
                 print(f"XXXXXXXXXX Sell Tax {sellTax} XXXXXXXXXX")
                 sonucmetin=sonucmetin+f"XXXXXXXXXX Sell Tax {sellTax} XXXXXXXXXX\n"
             if transferTax>10:
-                color="red"
+                color=False
                 print(f"XXXXXXXXXX Tranfer Tax {transferTax} XXXXXXXXXX")
                 sonucmetin=sonucmetin+f"XXXXXXXXXX Tranfer Tax {transferTax} XXXXXXXXXX\n"
             sonucmetin=sonucmetin+f"https://dexscreener.com/ethereum/{pair_address}\n"
             contrat_owner = get_ownerinfo(token_address)
             try:
                 if contrat_owner.find('000000')<0:
-                    break
+                    color=False
             except:
                 pass
-            sonucmetin=sonucmetin+f"Token Name: {token_name}- {token_symbol}\n"+f"Token Address: {token_address}\n"+f"Pair Address: {pair_address}\n"+f"--Is Honeypot: {is_honeypot} --Risk: {risk}\n"+f"--Risk Level: {risk_level} --Holders: {holders}\n"+f"---BuyTax: -- %{buyTax} --\n"+f"---SellTax: -- %{sellTax} --\n"+f"---TransferTax: -- %{transferTax} --"+f"\nContrat Owner: {contrat_owner}\nLiquidity: {liquidity}"
-            if color == "red":
-                sonucmetin=sonucmetin+f"\nXXXXXXXXXX HONEY POT ! XXXXXXXXXX"  
-                exit()
-            try:
-                #sonucmetin=sonucmetin+f"\n__________________________________\n"    
+            sonucmetin=sonucmetin+f"Token Name: {token_name}- {token_symbol}\n"+f"Token Address: {token_address}\n"+f"Pair Address: {pair_address}\n"+f"--Is Honeypot: {is_honeypot} --Risk: {risk}\n"+f"--Risk Level: {risk_level} --Holders: {holders}\n"+f"---BuyTax: -- %{buyTax} --\n"+f"---SellTax: -- %{sellTax} --\n"+f"---TransferTax: -- %{transferTax} --"+f"\nContrat Owner: {contrat_owner}\nLiquidity: {liquidity}"   
+            
+            
+            if color:
                 sonucmetin=sonucmetin+finalmetin+"\n----- ALL Liability is YOURS (DYOR!) -----"
                 asyncio.run(send_message(sonucmetin))
-            except Exception as e:
-                time.sleep(sleepy)
-                continue
+            else:
+                sonucmetin=sonucmetin+f"\nXXXXXXXXXX HONEY POT ! XXXXXXXXXX"
+                sonucmetin=sonucmetin+finalmetin+"\n----- ALL Liability is YOURS (DYOR!) -----"
+                #exit()
+
             try:
                 with open("DexScan_.txt", "a") as f:
                     f.write(f"{datetime.today().isoformat()};{sonucmetin}\n")
