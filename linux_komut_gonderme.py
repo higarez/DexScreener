@@ -49,11 +49,12 @@ def run_remote_command(hostname, username, password, token_address):
             
             # Komutu çalıştır
             #stdin, stdout, stderr = client.exec_command(commands)
-            stdin, stdout, stderr = client.exec_command(f"cd DexScreener && python3 DexScenTokenKontrol.py --add={token_address}")
+            client.exec_command(f"cd DexScreener && python3 DexScenTokenKontrol.py --add={token_address}")
             #exit()
+            break
             # Çıktıyı oku
-            print(stdout.read().decode())
-            print(stderr.read().decode())
+            #print(stdout.read().decode())
+            #print(stderr.read().decode())
         
         except Exception as e:
             print(f"Hata: {e}")
