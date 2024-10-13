@@ -170,7 +170,7 @@ def creator_scan(token_address,sonucmetin):
             del  response, headers
             #print(float(balance))
             #holderslink=f"https://etherscan.io/token/generic-tokenholders2?m=dark&a={token_address}&s=1000000000000000000&p=1"
-            finalmetin=sonucmetin+f"\nContrat Creator: {contractCreator}\nCreator Balance: {float(balance)/10**18} ETH\nAll Holders: https://etherscan.io/token/generic-tokenholders2?m=dark&a={token_address}&s=1000000000000000000&p=1"
+            finalmetin=sonucmetin+f"\n--Other Analyzer:https://etherscan.io/token/{token_address}#cards\nContrat Creator: {contractCreator}\nCreator Balance: {float(balance)/10**18} ETH\nAll Holders: https://etherscan.io/token/generic-tokenholders2?m=dark&a={token_address}&s=1000000000000000000&p=1"
             asyncio.run(send_elite_msg(finalmetin))
             break
         except Exception as e:
@@ -333,6 +333,7 @@ def check_token(token_address,pair_address,finalmetin):
                 asyncio.run(send_message(sonucmetin))
             else:
                 sonucmetin=sonucmetin+f"\n\nXXXXXXXXXXXXXXX HONEY POT ! XXXXXXXXXXXXXXX\n"
+                
                 sonucmetin=sonucmetin+finalmetin+"\n----- ALL Liability is YOURS (DYOR!) -----"
                 #exit()
 
