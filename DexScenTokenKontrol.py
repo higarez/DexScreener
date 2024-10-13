@@ -327,6 +327,7 @@ def check_token(token_address,pair_address,finalmetin):
              
             if color == "red":
                 sonucmetin=sonucmetin+f"\nXXXXXXXXXX HONEY POT ! XXXXXXXXXX"  
+                exit()
             try:
                 sonucmetin=sonucmetin+f"\n__________________________________\n"    
                 sonucmetin=sonucmetin+finalmetin+"\n----- SORUMLULUK SENDE -----"
