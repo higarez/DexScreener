@@ -331,7 +331,7 @@ def check_token(token_address,pair_address,finalmetin):
                 sonucmetin=sonucmetin+f"\nXXXXXXXXXX HONEY POT ! XXXXXXXXXX"  
                 exit()
             try:
-                sonucmetin=sonucmetin+f"\n__________________________________\n"    
+                #sonucmetin=sonucmetin+f"\n__________________________________\n"    
                 sonucmetin=sonucmetin+finalmetin+"\n----- ALL Liability is YOURS -----"
                 asyncio.run(send_message(sonucmetin))
             except Exception as e:
