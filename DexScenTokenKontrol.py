@@ -5,7 +5,7 @@ from datetime import datetime
 from eth_utils import to_checksum_address
 from telegram import Bot
 
-aktifsaat=2
+aktifsaat=3
 
 sleepy=3
 etherscanapikey=["VYCN5DQBDYBWNFMA4XXQM39PEKFGFNQU8G",
@@ -128,7 +128,6 @@ def get_honeypot_is(token_add):
             if unkrisk == False:
                 time.sleep(sleepy)
                 response="0"
-                time.sleep(sleepy)
                 del unkrisk
                 return response
         except:            
