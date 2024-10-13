@@ -321,7 +321,7 @@ def check_token(token_address,pair_address,finalmetin):
             contrat_owner = get_ownerinfo(token_address)
             try:
                 if contrat_owner.find('000000')<0:
-                    sonucmetin=sonucmetin+f"\n\nXXXXXXXXXXXXXXX OWNER NOT RENOUNCED ! XXXXXXXXXXXXXXX\n"
+                    sonucmetin=sonucmetin+f"\nXXXXXXXXXXXXXXX OWNER NOT RENOUNCED ! XXXXXXXXXXXXXXX\n\n"
                     color=False
             except:
                 pass
