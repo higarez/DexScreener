@@ -50,6 +50,7 @@ def run_remote_command(hostname, username, password, token_address):
             # Komutu çalıştır
             #stdin, stdout, stderr = client.exec_command(commands)
             client.exec_command(f"cd DexScreener && python3 DexScenTokenKontrol.py --add={token_address}")
+            client.close()
             #exit()
             break
             # Çıktıyı oku
@@ -58,12 +59,7 @@ def run_remote_command(hostname, username, password, token_address):
         
         except Exception as e:
             print(f"Hata: {e}")
-            continue
-        
-        finally:
-            # Bağlantıyı kapat
-            client.close()
-            break
+            continue        
         
 def main(token_address):
     max_free_memory = 0
