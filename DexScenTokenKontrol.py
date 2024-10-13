@@ -151,8 +151,8 @@ async def send_message(sonucmetin):
     await bot.send_message(chat_id='@dex_tarayici', text=sonucmetin)
     
 async def send_elite_msg(sonucmetin):
+    #telegramTOKEN = "7267134571:AAGdsu-PMVG7q_QRHWpKDzi-wql46YBeBEc" advo gem bot 
     #telegramTOKEN = "7849230972:AAHjBYSHEjQYkU0SLLdq8dLLxsatleGeXNs" Voice Sniper Bot
-    #telegramTOKEN = "7267134571:AAGdsu-PMVG7q_QRHWpKDzi-wql46YBeBEc"                
     bot = Bot(token="7849230972:AAHjBYSHEjQYkU0SLLdq8dLLxsatleGeXNs")
     await bot.send_message(chat_id='@AdvoGemAlpha', text=sonucmetin)
     
@@ -169,7 +169,8 @@ def creator_scan(token_address,sonucmetin):
             balance = response['result']
             del  response, headers
             print(float(balance))
-            finalmetin=sonucmetin+f"\nContrat Creator: {contractCreator}\nCreator Balance: {float(balance)/10**18} ETH"
+            #holderslink=f"https://etherscan.io/token/generic-tokenholders2?m=dark&a={token_address}&s=1000000000000000000&p=1"
+            finalmetin=sonucmetin+f"\nContrat Creator: {contractCreator}\nCreator Balance: {float(balance)/10**18} ETH\nAll Holders: https://etherscan.io/token/generic-tokenholders2?m=dark&a={token_address}&s=1000000000000000000&p=1"
             asyncio.run(send_elite_msg(finalmetin))
             break
         except Exception as e:
