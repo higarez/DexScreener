@@ -168,7 +168,7 @@ def creator_scan(token_address,sonucmetin):
             response = response.json() 
             balance = response['result']
             del  response, headers
-            print(float(balance))
+            #print(float(balance))
             #holderslink=f"https://etherscan.io/token/generic-tokenholders2?m=dark&a={token_address}&s=1000000000000000000&p=1"
             finalmetin=sonucmetin+f"\nContrat Creator: {contractCreator}\nCreator Balance: {float(balance)/10**18} ETH\nAll Holders: https://etherscan.io/token/generic-tokenholders2?m=dark&a={token_address}&s=1000000000000000000&p=1"
             asyncio.run(send_elite_msg(finalmetin))
