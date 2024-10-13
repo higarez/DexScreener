@@ -1,6 +1,6 @@
 requests
 termcolor
-web3==6.9.0
+web3==5.30.0
 uniswap-python
 eth-utils
 lru-dict
