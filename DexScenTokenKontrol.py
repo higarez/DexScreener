@@ -292,6 +292,11 @@ def check_token(token_address,pair_address,finalmetin):
                 sonucmetin=sonucmetin+f"XXXXXXXXXX Tranfer Tax {transferTax} XXXXXXXXXX\n"
             sonucmetin=sonucmetin+f"https://dexscreener.com/ethereum/{pair_address}\n"
             contrat_owner = get_ownerinfo(token_address)
+            try:
+                if contrat_owner.find('000000')<0:
+                    exit()
+            except:
+                pass
             sonucmetin=sonucmetin+f"Token Name: {token_name}\nToken Symbol: {token_symbol}\n"+f"Token Address: {token_address}\n"+f"Pair Address: {pair_address}\n"+f"Is Honeypot: {is_honeypot}\n"+f"Risk: {risk}\n"+f"Risk Level: {risk_level}\n"+f"Holders: {holders}\n\n"+f"---BuyTax: -- %{buyTax} --\n"+f"---SellTax: -- %{sellTax} --\n"+f"---TransferTax: -- %{transferTax} --\n"+f"\nLiquidity: {liquidity}\nContrat Owner: {contrat_owner}"            
              
             if color == "red":
