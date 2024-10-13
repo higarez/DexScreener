@@ -326,8 +326,8 @@ def check_token(token_address,pair_address,finalmetin):
                     break
             except:
                 pass
-            sonucmetin=sonucmetin+f"Token Name: {token_name}\nToken Symbol: {token_symbol}\n"+f"Token Address: {token_address}\n"+f"Pair Address: {pair_address}\n"+f"Is Honeypot: {is_honeypot}\n"+f"Risk: {risk}\n"+f"Risk Level: {risk_level}\n"+f"Holders: {holders}\n\n"+f"---BuyTax: -- %{buyTax} --\n"+f"---SellTax: -- %{sellTax} --\n"+f"---TransferTax: -- %{transferTax} --\n"+f"\nLiquidity: {liquidity}\nContrat Owner: {contrat_owner}"            
-             
+            sonucmetin=sonucmetin+f"Token Name: {token_name}\nToken Symbol: {token_symbol}\n"+f"Token Address: {token_address}\n"+f"Pair Address: {pair_address}\n"+f"Is Honeypot: {is_honeypot} Risk: {risk}\n"+f"Risk Level: {risk_level} Holders: {holders}\n"+f"---BuyTax: -- %{buyTax} --\n"+f"---SellTax: -- %{sellTax} --\n"+f"---TransferTax: -- %{transferTax} --"+f"\nContrat Owner: {contrat_owner}\nLiquidity: {liquidity}"   
+
             if color == "red":
                 sonucmetin=sonucmetin+f"\nXXXXXXXXXX HONEY POT ! XXXXXXXXXX"  
                 exit()
