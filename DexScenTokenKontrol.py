@@ -193,7 +193,7 @@ def getdexinfo(token_address):
                 priceUsd = response['pairs'][0]['priceUsd']
                 marketCap = response['pairs'][0]['marketCap']
                 websites = response['pairs'][0]['info']['websites']
-                finalmetin=f"Price WETH: {priceNative}"+f"\nPrice USD: {priceUsd}"+f"\nMarket Cap: {marketCap}"
+                finalmetin=f"\nPrice USD: {priceUsd}"+f"\nMarket Cap: {marketCap}"
             
                 for item in websites:
                     finalmetin=finalmetin+f"\nWeb Sites: {item['url']}"
