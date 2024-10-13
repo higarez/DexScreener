@@ -147,11 +147,13 @@ def get_honeypot_is(token_add):
         return data
 
 async def send_message(sonucmetin):
-    time.sleep(1)
+    bot = Bot(token="7267134571:AAGdsu-PMVG7q_QRHWpKDzi-wql46YBeBEc")
     await bot.send_message(chat_id='@dex_tarayici', text=sonucmetin)
     
 async def send_elite_msg(sonucmetin):
-    time.sleep(1)
+    #telegramTOKEN = "7849230972:AAHjBYSHEjQYkU0SLLdq8dLLxsatleGeXNs" Voice Sniper Bot
+    #telegramTOKEN = "7267134571:AAGdsu-PMVG7q_QRHWpKDzi-wql46YBeBEc"                
+    bot = Bot(token="7849230972:AAHjBYSHEjQYkU0SLLdq8dLLxsatleGeXNs")
     await bot.send_message(chat_id='@AdvoGemAlpha', text=sonucmetin)
     
 def creator_scan(token_address,sonucmetin):
@@ -180,7 +182,7 @@ def getdexinfo(token_address):
             hours, minutes, seconds = map(int, (datetime.today().isoformat()[11:19]).split(':'))
             simdikizaman= hours * 3600 + minutes * 60 + seconds
             if simdikizaman-baslangictarihi>3600*aktifsaat:
-                    #exit()
+                    exit()
                     del simdikizaman
                     break
             try:                
@@ -232,7 +234,7 @@ def getcontractinfo(token_add):
             hours, minutes, seconds = map(int, (datetime.today().isoformat()[11:19]).split(':'))
             simdikizaman= hours * 3600 + minutes * 60 + seconds
             if simdikizaman-baslangictarihi>3600*aktifsaat:
-                    #exit()
+                    exit()
                     del simdikizaman
                     break
             try:
@@ -261,7 +263,7 @@ def check_token(token_address,pair_address,finalmetin):
             hours, minutes, seconds = map(int, (datetime.today().isoformat()[11:19]).split(':'))
             simdikizaman= hours * 3600 + minutes * 60 + seconds
             if simdikizaman-baslangictarihi>3600*aktifsaat:
-                #exit()
+                exit()
                 del simdikizaman
                 break
             if counter >200:
@@ -331,6 +333,7 @@ def check_token(token_address,pair_address,finalmetin):
             try:
                 sonucmetin=sonucmetin+f"\n__________________________________\n"    
                 sonucmetin=sonucmetin+finalmetin+"\n----- SORUMLULUK SENDE -----"
+                asyncio.run(send_message(sonucmetin))
             except Exception as e:
                 time.sleep(sleepy)
                 continue
@@ -339,7 +342,6 @@ def check_token(token_address,pair_address,finalmetin):
                     f.write(f"{datetime.today().isoformat()};{sonucmetin}\n")
             except Exception as e:
                 print(e)
-            asyncio.run(send_message(sonucmetin))
             del contrat_owner, color, holders, liquidity, index, transferTax, sellTax, buyTax, risk_level, risk, token_name, token_symbol, token_address, pair_address, is_honeypot
             #exit()
             return sonucmetin
@@ -368,13 +370,11 @@ if __name__ == "__main__":
                     pair_address=getcontractinfo(token_address)
                     firststart=False
                     print("First Start, Take Control!")
-                #print("Devamkee..")
                 #telegramTOKEN = "7849230972:AAHjBYSHEjQYkU0SLLdq8dLLxsatleGeXNs" Voice Sniper Bot
-                #telegramTOKEN = "7267134571:AAGdsu-PMVG7q_QRHWpKDzi-wql46YBeBEc"                
-                bot = Bot(token="7267134571:AAGdsu-PMVG7q_QRHWpKDzi-wql46YBeBEc")
+                #telegramTOKEN = "7267134571:AAGdsu-PMVG7q_QRHWpKDzi-wql46YBeBEc"   
                 finalmetin = getdexinfo(token_address)
                 sonucmetin = check_token(token_address,pair_address,finalmetin)                
-                creator_scan(token_address,sonucmetin)
+                creator_scan(token_address, sonucmetin)
                 break
         except Exception as e:
             print(f"Failed to connect!\n{e}")
