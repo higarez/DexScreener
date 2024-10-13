@@ -330,7 +330,7 @@ def check_token(token_address,pair_address,finalmetin):
                     f.write(f"{datetime.today().isoformat()};{sonucmetin}\n")
             except Exception as e:
                 print(e)
-            #asyncio.run(send_message(sonucmetin))
+            asyncio.run(send_message(sonucmetin))
             
             creator_add, creator_balance = creator_scan(token_address)
             sonucmetin=sonucmetin+f"\nContrat Creator: {creator_add}\nCreator Balance: {float(creator_balance)/10**18} ETH"            
