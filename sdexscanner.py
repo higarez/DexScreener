@@ -2,7 +2,7 @@ import os, random, time, subprocess, requests,  json, sys
 from web3 import Web3
 from datetime import datetime
 
-sleepy=0.5
+sleepy=1
 hidden=True
 
 
