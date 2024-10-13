@@ -158,12 +158,15 @@ def creator_scan(token_address):
             headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36"}
             response = requests.get(f"https://api.etherscan.io/api?module=contract&action=getcontractcreation&contractaddresses={token_address}&apikey={random.choice(etherscanapikey)}", headers=headers)
             response = response.json()    
-            contractCreator = response['result'][0]["contractCreator"]            
+            contractCreator = response['result'][0]["contractCreator"]      
+            del response
             response = requests.get(f"https://api.etherscan.io/api?module=account&action=balance&address={contractCreator}&tag=latest&apikey={random.choice(etherscanapikey)}", headers=headers)
+            response = response.json() 
             balance = response['result']
-            del response, headers
+            del  response, headers
             return contractCreator, balance
         except Exception as e:
+            print(f"-(Creator_Scan)- Bir Hata oluştu :\n{e}\n")
             continue
 
 def getdexinfo(token_address):
@@ -242,7 +245,7 @@ def getcontractinfo(token_add):
                     return pair_address
                     break
             except Exception as e:
-                    print(f" -(GetContractInfo)- Bir Hata oluştu :\n{e}\n")
+                    print(f"-(GetContractInfo)- Bir Hata oluştu :\n{e}\n")
                     time.sleep(sleepy)
                     continue
 
@@ -335,7 +338,7 @@ def check_token(token_address,pair_address,finalmetin):
             creator_add, creator_balance = creator_scan(token_address)
             sonucmetin=sonucmetin+f"\nContrat Creator: {creator_add}\nCreator Balance: {float(creator_balance)/10**18} ETH"            
             asyncio.run(send_elite_msg(sonucmetin))
-            del contrat_owner, color, holders, liquidity, index, transferTax, sellTax, buyTax, risk_level, risk, token_name, token_symbol, token_address, pair_address, is_honeypot, sonucmetin
+            del contrat_owner, color, holders, liquidity, index, transferTax, sellTax, buyTax, risk_level, risk, token_name, token_symbol, token_address, pair_address, is_honeypot, sonucmetin, creator_add, creator_balance
             #exit()
             break
         except Exception as e:
