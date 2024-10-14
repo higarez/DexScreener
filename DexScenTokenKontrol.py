@@ -385,7 +385,7 @@ if __name__ == "__main__":
                     break
                 else:
                     creator_scan(token_address, sonucmetin)
-                    time.sleep(30)
+                    time.sleep(15)
                     asyncio.run(send_message(sonucmetin))
                 break
     except Exception as e:
