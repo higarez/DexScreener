@@ -150,7 +150,7 @@ async def send_message(sonucmetin):
     bot = Bot(token="7267134571:AAGdsu-PMVG7q_QRHWpKDzi-wql46YBeBEc")
     await bot.send_message(chat_id='@dex_tarayici', text=sonucmetin)
     
-async def send_elite_msg(sonucmetin):
+async def send_elite_msg(finalmetin):
     #telegramTOKEN = "7267134571:AAGdsu-PMVG7q_QRHWpKDzi-wql46YBeBEc" advo gem bot 
     #telegramTOKEN = "7849230972:AAHjBYSHEjQYkU0SLLdq8dLLxsatleGeXNs" Voice Sniper Bot
     bot = Bot(token="7849230972:AAHjBYSHEjQYkU0SLLdq8dLLxsatleGeXNs")
@@ -170,8 +170,12 @@ def creator_scan(token_address,sonucmetin):
             del  response, headers
             #print(float(balance))
             #holderslink=f"https://etherscan.io/token/generic-tokenholders2?m=dark&a={token_address}&s=1000000000000000000&p=1"
-            finalmetin=sonucmetin+f"\n--Other Analyzer: https://etherscan.io/token/{token_address}#cards\nContrat Creator: {contractCreator}\nCreator Balance: {float(balance)/10**18} ETH\nAll Holders: https://etherscan.io/token/generic-tokenholders2?m=dark&a={token_address}&s=1000000000000000000&p=1"
-            asyncio.run(send_elite_msg(finalmetin))
+            balance=float(balance)/10**18
+            if balance<3:
+                break
+            else:
+                finalmetin=sonucmetin+f"\n--Other Analyzer: https://etherscan.io/token/{token_address}#cards\nContrat Creator: {contractCreator}\nCreator Balance: {balance} ETH\nAll Holders: https://etherscan.io/token/generic-tokenholders2?m=dark&a={token_address}&s=1000000000000000000&p=1"
+                asyncio.run(send_elite_msg(finalmetin))
             break
         except Exception as e:
             print(f"-(Creator_Scan)- Bir Hata oluştu :\n{e}\n")
@@ -207,6 +211,7 @@ def getdexinfo(token_address):
             except Exception as e:
                 time.sleep(sleepy)
                 continue
+                
     except Exception as e:
         print(f" -(GetDexInfo)- Bir Hata oluştu :\n{e}\n")
         
@@ -277,7 +282,7 @@ def check_token(token_address,pair_address,finalmetin):
             if data=="0":
                 time.sleep(sleepy)
                 continue
-            sonucmetin=""
+            sonucmetin=f"https://dexscreener.com/ethereum/{pair_address}\n"
             token_name = data['token']['name']
             token_symbol = data['token']['symbol']
             is_honeypot = data['honeypotResult']['isHoneypot']
@@ -317,7 +322,7 @@ def check_token(token_address,pair_address,finalmetin):
                 color=False
                 print(f"XXXXXXXXXX Tranfer Tax {transferTax} XXXXXXXXXX")
                 sonucmetin=sonucmetin+f"XXXXXXXXXX Tranfer Tax {transferTax} XXXXXXXXXX\n"
-            sonucmetin=sonucmetin+f"https://dexscreener.com/ethereum/{pair_address}\n"
+            #sonucmetin=sonucmetin+f"https://dexscreener.com/ethereum/{pair_address}\n"
             contrat_owner = get_ownerinfo(token_address)
             try:
                 if contrat_owner.find('000000')<0:
@@ -331,17 +336,16 @@ def check_token(token_address,pair_address,finalmetin):
             if color:
                 sonucmetin=sonucmetin+finalmetin+"\n----- ALL Liability is YOURS (DYOR!) -----"
                 asyncio.run(send_message(sonucmetin))
+                try:
+                    with open("DexScan_.txt", "a") as f:
+                        f.write(f"{datetime.today().isoformat()};{sonucmetin}\n")
+                except Exception as e:
+                    print(e)
             else:
-                sonucmetin=sonucmetin+f"\n\nXXXXXXXXXXXXXXX HONEY POT ! XXXXXXXXXXXXXXX\n"
-                
+                sonucmetin=sonucmetin+f"\n\nXXXXXXXXXXXXXXX HONEY POT ! XXXXXXXXXXXXXXX\n"                
                 sonucmetin=sonucmetin+finalmetin+"\n----- ALL Liability is YOURS (DYOR!) -----"
-                #exit()
-
-            try:
-                with open("DexScan_.txt", "a") as f:
-                    f.write(f"{datetime.today().isoformat()};{sonucmetin}\n")
-            except Exception as e:
-                print(e)
+                sonucmetin=""
+            
             del contrat_owner, color, holders, liquidity, index, transferTax, sellTax, buyTax, risk_level, risk, token_name, token_symbol, token_address, pair_address, is_honeypot
             #exit()
             return sonucmetin
@@ -373,8 +377,11 @@ if __name__ == "__main__":
                 #telegramTOKEN = "7849230972:AAHjBYSHEjQYkU0SLLdq8dLLxsatleGeXNs" Voice Sniper Bot
                 #telegramTOKEN = "7267134571:AAGdsu-PMVG7q_QRHWpKDzi-wql46YBeBEc"   
                 finalmetin = getdexinfo(token_address)
-                sonucmetin = check_token(token_address,pair_address,finalmetin)                
-                creator_scan(token_address, sonucmetin)
+                sonucmetin = check_token(token_address,pair_address,finalmetin)   
+                if len(sonucmetin)<5:
+                    break
+                else:
+                    creator_scan(token_address, sonucmetin)
                 break
     except Exception as e:
             print(f"Failed to connect!\n{e}")
