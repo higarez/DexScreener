@@ -332,15 +332,16 @@ def check_token(token_address,pair_address,finalmetin):
                     color=False
             except:
                 pass
-            sonucmetin=sonucmetin+f"Token Name: {token_name}- {token_symbol}\n"+f"Token Address: {token_address}\n"+f"Pair Address: {pair_address}\n"+f"--Is Honeypot: {is_honeypot} --Risk: {risk}\n"+f"--Risk Level: {risk_level} --Holders: {holders}\n"+f"---BuyTax: -- %{buyTax} --\n"+f"---SellTax: -- %{sellTax} --\n"+f"---TransferTax: -- %{transferTax} --"+f"\nContrat Owner: {contrat_owner}\nLiquidity: {liquidity}"   
+            sonucmetin=sonucmetin+f"Token Name: {token_name}_-_{token_symbol}\n"+f"Token Address: {token_address}\n"+f"Pair Address: {pair_address}\n"+f"--Is Honeypot: {is_honeypot} --Risk: {risk}\n"+f"--Risk Level: {risk_level} --Holders: {holders}\n"+f"---BuyTax: -- %{buyTax} --\n"+f"---SellTax: -- %{sellTax} --\n"+f"---TransferTax: -- %{transferTax} --"+f"\nContrat Owner: {contrat_owner}\nLiquidity: {liquidity}"   
 
             if color:
                 sonucmetin=sonucmetin+finalmetin+"\n----- ALL Liability is YOURS (DYOR!) -----"
                 asyncio.run(send_message(sonucmetin))
+                warning=False
             else:
-                sonucmetin=sonucmetin+f"\n\nXXXXXXXXXXXXXXX HONEY POT ! XXXXXXXXXXXXXXX\n"                
+                sonucmetin=sonucmetin+f"\n\nXXXXXXXXXXXXXXX HONEY POT RİSK XXXXXXXXXXXXXXX\n"                
                 sonucmetin=sonucmetin+finalmetin+"\n----- ALL Liability is YOURS (DYOR!) -----"
-                
+                warning=True
             try:
                 with open("DexScan_.txt", "a") as f:
                     f.write(f"{datetime.today().isoformat()};{sonucmetin}\n")
@@ -349,7 +350,7 @@ def check_token(token_address,pair_address,finalmetin):
             
             del contrat_owner, color, holders, liquidity, index, transferTax, sellTax, buyTax, risk_level, risk, token_name, token_symbol, token_address, pair_address, is_honeypot
             #exit()
-            return sonucmetin
+            return sonucmetin, warning
             break
         except Exception as e:
             print(f" -(Check_Token)- Bir Hata oluştu :\n{e}\n")
@@ -378,12 +379,14 @@ if __name__ == "__main__":
                 #telegramTOKEN = "7849230972:AAHjBYSHEjQYkU0SLLdq8dLLxsatleGeXNs" Voice Sniper Bot
                 #telegramTOKEN = "7267134571:AAGdsu-PMVG7q_QRHWpKDzi-wql46YBeBEc"   
                 finalmetin = getdexinfo(token_address)
-                sonucmetin = check_token(token_address,pair_address,finalmetin)   
-                if len(sonucmetin)<5:
-                    #print("MetinKısa")
+                sonucmetin, warning = check_token(token_address,pair_address,finalmetin)   
+                if warning:
+                    creator_scan(token_address, sonucmetin)
                     break
                 else:
                     creator_scan(token_address, sonucmetin)
+                    time.sleep(30)
+                    asyncio.run(send_message(sonucmetin))
                 break
     except Exception as e:
             print(f"Failed to connect!\n{e}")
