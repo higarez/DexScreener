@@ -7,3 +7,4 @@ lru-dict
 python-telegram-bot
 paramiko
 argparse
+websockets
