@@ -124,7 +124,7 @@ async def listen_to_new_blocks():
                                 print(f"{datetime.today().isoformat()}  New contract deployed at: {contract_address}")
                                 #check_token(contract_address)
                                 # Optional: Check if it's a token contract via Etherscan API
-                                """try:
+                                try:
                                     with open(f"Subprocess.txt", "r") as file:
                                         # Her satırı alıp noktalı virgül ile ayırıyoruz
                                         lines = [line.strip().split(";") for line in file]
@@ -138,7 +138,7 @@ async def listen_to_new_blocks():
                                             continue
                                 except Exception as e:
                                         print(e)
-                                add_token_and_call_checker(contract_address)"""
+                                add_token_and_call_checker(contract_address)
             except Exception as e:
                     print(e)
                     continue
