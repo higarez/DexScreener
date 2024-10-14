@@ -171,8 +171,8 @@ def creator_scan(token_address,sonucmetin):
             #print(float(balance))
             #holderslink=f"https://etherscan.io/token/generic-tokenholders2?m=dark&a={token_address}&s=1000000000000000000&p=1"
             balance=float(balance)/10**18
-            print(balance)
-            if balance<3:
+            #print(balance)
+            if balance<3.0:
                 break
             else:
                 finalmetin=sonucmetin+f"\n--Other Analyzer: https://etherscan.io/token/{token_address}#cards\nContrat Creator: {contractCreator}\nCreator Balance: {balance} ETH\nAll Holders: https://etherscan.io/token/generic-tokenholders2?m=dark&a={token_address}&s=1000000000000000000&p=1"
@@ -336,7 +336,7 @@ def check_token(token_address,pair_address,finalmetin):
 
             if color:
                 sonucmetin=sonucmetin+finalmetin+"\n----- ALL Liability is YOURS (DYOR!) -----"
-                asyncio.run(send_message(sonucmetin))
+                #asyncio.run(send_message(sonucmetin))
                 warning=False
             else:
                 sonucmetin=sonucmetin+f"\n\nXXXXXXXXXXXXXXX HONEY POT RİSK XXXXXXXXXXXXXXX\n"                
