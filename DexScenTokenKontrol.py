@@ -154,7 +154,7 @@ async def send_elite_msg(finalmetin):
     #telegramTOKEN = "7267134571:AAGdsu-PMVG7q_QRHWpKDzi-wql46YBeBEc" advo gem bot 
     #telegramTOKEN = "7849230972:AAHjBYSHEjQYkU0SLLdq8dLLxsatleGeXNs" Voice Sniper Bot
     bot = Bot(token="7849230972:AAHjBYSHEjQYkU0SLLdq8dLLxsatleGeXNs")
-    await bot.send_message(chat_id='@AdvoGemAlpha', text=sonucmetin)
+    await bot.send_message(chat_id='@AdvoGemAlpha', text=finalmetin)
     
 def creator_scan(token_address,sonucmetin):
     while True:
@@ -171,6 +171,7 @@ def creator_scan(token_address,sonucmetin):
             #print(float(balance))
             #holderslink=f"https://etherscan.io/token/generic-tokenholders2?m=dark&a={token_address}&s=1000000000000000000&p=1"
             balance=float(balance)/10**18
+            print(balance)
             if balance<3:
                 break
             else:
@@ -379,6 +380,7 @@ if __name__ == "__main__":
                 finalmetin = getdexinfo(token_address)
                 sonucmetin = check_token(token_address,pair_address,finalmetin)   
                 if len(sonucmetin)<5:
+                    #print("MetinKısa")
                     break
                 else:
                     creator_scan(token_address, sonucmetin)
