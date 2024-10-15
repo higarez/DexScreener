@@ -256,6 +256,11 @@ def getcontractinfo(token_add):
         if not web3.is_connected():            
             continue
         else:         
+            break
+            
+    uniswap_router = web3.eth.contract(address="0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f", abi=get_abi("0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f"))                
+    weth_address = Web3.to_checksum_address("0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2")
+    while True: 
             hours, minutes, seconds = map(int, (datetime.today().isoformat()[11:19]).split(':'))
             simdikizaman= hours * 3600 + minutes * 60 + seconds
             if simdikizaman-baslangictarihi>3600*aktifsaat:
@@ -263,8 +268,6 @@ def getcontractinfo(token_add):
                     del simdikizaman
                     break
             try:
-                uniswap_router = web3.eth.contract(address="0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f", abi=get_abi("0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f"))                
-                weth_address = Web3.to_checksum_address("0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2")
                 pair_address = uniswap_router.functions.getPair(token_add, weth_address).call()
                 if pair_address == '0x0000000000000000000000000000000000000000':
                     time.sleep(sleepy)
