@@ -88,34 +88,44 @@ URLS = ["https://mainnet.infura.io/v3/fa90fd8d679a401f8fd45a271760b987",
         "https://mainnet.infura.io/v3/e1eaa9cb999c4a398a1f0432f6e30207",
         "https://mainnet.infura.io/v3/60e71345bdc44d439f9e43a56f3fe60c",
         "https://mainnet.infura.io/v3/6fa0b87a6c9f414d838f2b1e06b3246b",
-        "https://mainnet.infura.io/v3/e6fe125682cb4b86883771f98057b768",
-        "https://mainnet.infura.io/v3/e52948cc71c74d8797097a7509e10373",
-        "https://eth-mainnet.g.alchemy.com/v2/drcd7mTcR3dbXG9yTXnFJQQWyjpjGzrl",
-        "https://eth-mainnet.g.alchemy.com/v2/6TG7sh8FplvOPvLE3QYG_9DjvhIeqEiN",
-        "https://eth-mainnet.g.alchemy.com/v2/mndHizJp12hQM3jyDxc-kN133WdNqOBM",
-        "https://eth-mainnet.g.alchemy.com/v2/5Ur4mLJ0_n5JGEvOYbIRcLCdGPAAW6oq",
-        "https://eth-mainnet.g.alchemy.com/v2/h_uqgT30jDgXz8SbbxGRRNjqNKkp1JUb",
-        "https://eth-mainnet.g.alchemy.com/v2/ttVre8nxMeJqtCWfACyJTsqRGzTPjrg_",
-        "https://eth-mainnet.g.alchemy.com/v2/P-JbSaH0IXU8ByHqZ3NTqFMoQuGwZSuc"]
+        "https://mainnet.infura.io/v3/e6fe125682cb4b86883771f98057b768"]
      
 hours, minutes, seconds = map(int, (datetime.today().isoformat()[11:19]).split(':'))
 baslangictarihi= hours * 3600 + minutes * 60 + seconds
 
 def get_abi(address):
+    file_path = os.path.join("abi_list", f"{address}.txt")
+    # ABI dosyasının daha önce alınmış olup olmadığını kontrol edin
+    if os.path.exists(file_path):
+        # ABI dosyasını okuyun ve geri döndürün
+        try:
+            with open(file_path, "r") as f:
+                abi = f.read()
+                f.close()
+                #print(f"{address} için ABI dosyadan yüklendi.")
+                return abi
+        except Exception as e:
+            #print(f"{address} için ABI dosyasını okuma hatası: {e}")
+            pass
     while True:
         try:
             headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36"}
             response = requests.get(f"https://api.etherscan.io/api?module=contract&action=getsourcecode&address={address}&apikey={random.choice(etherscanapikey)}", headers=headers)
-            response = response.json()    
+            response = response.json()
             sourcecode = response['result'][0]["SourceCode"]
             abi = response['result'][0]["ABI"]
             if sourcecode=="":
                 #print("Token Kontratı onaylanmamış!")
                 time.sleep(1)
+                continue
             del sourcecode, headers ,response
+            with open(file_path, "a") as f:
+                f.write(f"{abi}\n")
+                f.close()
             return abi
         except Exception as e:
                 print(f" -(GetAbi)- Bir Hata oluştu :\n{e}\n")
+                time.sleep(1)
                 continue
                 
 def get_honeypot_is(token_add):
@@ -171,10 +181,18 @@ def creator_scan(token_address,sonucmetin):
             #print(float(balance))
             #holderslink=f"https://etherscan.io/token/generic-tokenholders2?m=dark&a={token_address}&s=1000000000000000000&p=1"
             balance=float(balance)/10**18
-            #print(balance)
-            if balance<3.0:
+            print(balance)
+            if balance<3:
                 break
             else:
+                #headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36"}
+                #response = requests.get('https://etherscan.io/token/tokenholderchart/{token_address}', headers=headers).text
+                #print(response)
+                #response=response[response.find('</a></div></td><td>'):response.find('</td><td>')]    
+                #print(response)
+                #time.sleep(1)
+                #response=response[response.find('</span></td><td>')+15:response.find('%')]
+                #print(f"\n\n{response}\n")
                 finalmetin=sonucmetin+f"\n--Other Analyzer: https://etherscan.io/token/{token_address}#cards\nContrat Creator: {contractCreator}\nCreator Balance: {balance} ETH\nAll Holders: https://etherscan.io/token/generic-tokenholders2?m=dark&a={token_address}&s=1000000000000000000&p=1"
                 asyncio.run(send_elite_msg(finalmetin))
             break
@@ -385,7 +403,7 @@ if __name__ == "__main__":
                     break
                 else:
                     creator_scan(token_address, sonucmetin)
-                    time.sleep(15)
+                    time.sleep(30)
                     asyncio.run(send_message(sonucmetin))
                 break
     except Exception as e:
