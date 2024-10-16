@@ -39,7 +39,56 @@ etherscanapikey=["VYCN5DQBDYBWNFMA4XXQM39PEKFGFNQU8G",
         "5PDC5C6R6YCIEFYTAV979IADBT3M6WYHS4",
         "N4RY1V9B37S4IYUZ97J2WUU9CNRN5JT55Z"]
 
-
+ws_url=["wss://mainnet.infura.io/ws/v3/fa90fd8d679a401f8fd45a271760b987",
+        "wss://mainnet.infura.io/ws/v3/e0a910e5638f4d3a8dde924c940759c5",
+        "wss://mainnet.infura.io/ws/v3/db2185997ccb47f59843d70db0a0651b",
+        "wss://mainnet.infura.io/ws/v3/d85b64720fff420e892de868beea517c",
+        "wss://mainnet.infura.io/ws/v3/fa6549b722ab4179a85b3c15bd486981",
+        "wss://mainnet.infura.io/ws/v3/c86528f78e8047c19a3b14e27e3487af",
+        "wss://mainnet.infura.io/ws/v3/fc37bb47f9494d5987f29b9ea5e14ea1",
+        "wss://mainnet.infura.io/ws/v3/afa4f1b01e7e4689ac4f4f5e14035e3c",
+        "wss://mainnet.infura.io/ws/v3/3acaf332276e4e5383d16825a6a6461c",
+        "wss://mainnet.infura.io/ws/v3/8e3339a19af949d0b46f5ddedeaf30d9",
+        "wss://mainnet.infura.io/ws/v3/7ac51dddd5514743bc4d06cef5dc8ea1",
+        "wss://mainnet.infura.io/ws/v3/83b16940bbed499f999d10cd75905d9e",
+        "wss://mainnet.infura.io/ws/v3/fb569ddaa2fb4f58a785c51ea8c1aa85",
+        "wss://mainnet.infura.io/ws/v3/c8dcaef55f494059bcade1119cfe1e03",
+        "wss://mainnet.infura.io/ws/v3/bdcf7660ddfb46e8af306b7dd45eb8d5",
+        "wss://mainnet.infura.io/ws/v3/8f627b13f2b54a66ba961112cfddfbd9",
+        "wss://mainnet.infura.io/ws/v3/dd0cc53898a04967ad6615e199d5fc54",
+        "wss://mainnet.infura.io/ws/v3/c9cc4dc3c7fd4fc3b17e2b82c18f5fad",
+        "wss://mainnet.infura.io/ws/v3/73e68311fc5341e596bb7038a6ca8644",
+        "wss://mainnet.infura.io/ws/v3/3043c095fa214da1bad47a48aade8415",
+        "wss://mainnet.infura.io/ws/v3/afeb0067527540d189b7389a4b773268",
+        "wss://mainnet.infura.io/ws/v3/2e151b5f3e4e4b058749c379d038cb7b",
+        "wss://mainnet.infura.io/ws/v3/b96b2eb3d0cc4568a29e90d7f0eaee11",
+        "wss://mainnet.infura.io/ws/v3/cf3e8f7e71654d26832f4ba880f6a375",
+        "wss://mainnet.infura.io/ws/v3/b899d8e68180450eaa2d5d0ead9d0685",
+        "wss://mainnet.infura.io/ws/v3/9e1c0320bbae4f6495063644d056c4d3",
+        "wss://mainnet.infura.io/ws/v3/0fea7f6094d44373afffd693085dbc09",
+        "wss://mainnet.infura.io/ws/v3/576da22a662042ef8abe2e8eadaa0ce2",
+        "wss://mainnet.infura.io/ws/v3/c42d1f0560f94dc3b39bba946f0799db",
+        "wss://mainnet.infura.io/ws/v3/a99308cc194f47d6905e7155a295ec6d",
+        "wss://mainnet.infura.io/ws/v3/91e050c9fdc34a10b399685f44ce0389",
+        "wss://mainnet.infura.io/ws/v3/f5fa7e3f5c324276821edf453514a867",
+        "wss://mainnet.infura.io/ws/v3/49b08d04ca7f456abd17b01881a82aa3",
+        "wss://mainnet.infura.io/ws/v3/4a50e650e74648feb7021bea7d8331ba",
+        "wss://mainnet.infura.io/ws/v3/858dbac3dab24f72a0f6896358a73d1f",
+        "wss://mainnet.infura.io/ws/v3/cb13203cac6b4341834042063415d35c",
+        "wss://mainnet.infura.io/ws/v3/53b57dba96fc4228bdbed7655d6d1cb3",
+        "wss://mainnet.infura.io/ws/v3/b87aae3d6e3449b599cae4766438308d",
+        "wss://mainnet.infura.io/ws/v3/bb47ba781e8148ad9bda0e90739660ad",
+        "wss://mainnet.infura.io/ws/v3/04e3390ab8ef4850870749c7b5ba7ce4",
+        "wss://mainnet.infura.io/ws/v3/eb2de220edbf4afda9648e1ca59dfea7",
+        "wss://mainnet.infura.io/ws/v3/3a7e16b725bc42b1bfcff8ce65d59e60",
+        "wss://mainnet.infura.io/ws/v3/27adcd828ea544e99608b7209ea46089",
+        "wss://mainnet.infura.io/ws/v3/fd496bf2ccfa44fbafb40c26b6767591",
+        "wss://mainnet.infura.io/ws/v3/ea3ed7364c88475aa32d886b4d4a77c1",
+        "wss://mainnet.infura.io/ws/v3/e1eaa9cb999c4a398a1f0432f6e30207",
+        "wss://mainnet.infura.io/ws/v3/60e71345bdc44d439f9e43a56f3fe60c",
+        "wss://mainnet.infura.io/ws/v3/6fa0b87a6c9f414d838f2b1e06b3246b",
+        "wss://mainnet.infura.io/ws/v3/e6fe125682cb4b86883771f98057b768"]
+        
 URLS = ["https://mainnet.infura.io/v3/fa90fd8d679a401f8fd45a271760b987",
         "https://mainnet.infura.io/v3/e0a910e5638f4d3a8dde924c940759c5",
         "https://mainnet.infura.io/v3/db2185997ccb47f59843d70db0a0651b",
@@ -165,7 +214,78 @@ async def send_elite_msg(finalmetin):
     #telegramTOKEN = "7849230972:AAHjBYSHEjQYkU0SLLdq8dLLxsatleGeXNs" Voice Sniper Bot
     bot = Bot(token="7849230972:AAHjBYSHEjQYkU0SLLdq8dLLxsatleGeXNs")
     await bot.send_message(chat_id='@AdvoGemAlpha', text=finalmetin)
-    
+def top10_info(token_address):
+    token_abi = [
+    {
+        "constant": True,
+        "inputs": [{"internalType":"address","name":"account","type":"address"}],
+        "name": "balanceOf",
+        #"outputs": [{"name": "balance", "type": "uint256"}],
+        "outputs":[{"internalType":"uint256","name":"","type":"uint256"}],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant":True,
+        "inputs":[],
+        "name":"totalSupply",
+        "outputs":[{"internalType":"uint256","name":"","type":"uint256"}],
+        "stateMutability":"view",
+        "type":"function"
+    }
+]
+    top10Balance=0
+    while True:
+            web3_sockets = Web3(Web3.WebsocketProvider(random.choice(ws_url)))  
+            if web3_sockets.is_connected():
+                break
+            else:
+                #print("Web3 Bağlantı hatası")
+                continue
+    while True:
+        try:
+            contract = web3_sockets.eth.contract(address=token_address, abi=token_abi)
+            transfer_event_signature = web3_sockets.keccak(text="Transfer(address,address,uint256)").hex()
+            to_block = web3_sockets.eth.block_number  # Son bloğu al
+            from_block = max(0, to_block - 10)
+            holders = []
+            try:
+                # Event filtreleme
+                event_filter = web3_sockets.eth.filter({
+                    "fromBlock": from_block,
+                    "toBlock": to_block,
+                    "address": token_address,
+                    "topics": [transfer_event_signature]
+                })
+                events = event_filter.get_all_entries()
+                # Transfer olaylarını analiz edin
+                for event in events:
+                    # HexBytes'ı string'e çevir ve checksum adresini al
+                    #from_address = Web3.to_checksum_address(event['topics'][1].hex()[26:])  # İlk 26 karakter sıfır
+                    to_address = Web3.to_checksum_address(event['topics'][2].hex()[26:])    # İlk 26 karakter sıfır
+                    # Gönderenin ve alıcının bakiyelerini al
+                    #from_balance = get_token_balance(from_address)
+                    to_balance = get_token_balance(to_address)
+                    if to_address in [holder['address'] for holder in holders]:
+                        for holder in holders:
+                            if holder['address'] == to_address:
+                                holder['balance'] == to_balance  # Güncelle
+                    elif to_address not in [holder['address'] for holder in holders]:
+                        holders.append({'address': to_address, 'balance': to_balance})
+
+            except Exception as e:
+                #print(f"Hata: {e}")
+                continue
+            top10 = sorted(holders, key=lambda x: x['balance'], reverse=True)[:10]
+            totalsupply=contract.functions.totalSupply().call()
+            for holder in top10:
+                top10Balance+=holder['balance']
+                print(f"Adres: {holder['address']}, Net Bakiyeler: {holder['balance']}")
+            return top10Balance, totalsupply
+        except Exception as e:
+                print(f"Hata: {e}")
+                continue
+            
 def creator_scan(token_address,sonucmetin):
     while True:
         try:
@@ -181,19 +301,12 @@ def creator_scan(token_address,sonucmetin):
             #print(float(balance))
             #holderslink=f"https://etherscan.io/token/generic-tokenholders2?m=dark&a={token_address}&s=1000000000000000000&p=1"
             balance=float(balance)/10**18
-            print(balance)
+            #print(balance)
             if balance<3:
                 break
             else:
-                #headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36"}
-                #response = requests.get('https://etherscan.io/token/tokenholderchart/{token_address}', headers=headers).text
-                #print(response)
-                #response=response[response.find('</a></div></td><td>'):response.find('</td><td>')]    
-                #print(response)
-                #time.sleep(1)
-                #response=response[response.find('</span></td><td>')+15:response.find('%')]
-                #print(f"\n\n{response}\n")
-                finalmetin=sonucmetin+f"\n--Other Analyzer: https://etherscan.io/token/{token_address}#cards\nContrat Creator: {contractCreator}\nCreator Balance: {balance} ETH\nAll Holders: https://etherscan.io/token/generic-tokenholders2?m=dark&a={token_address}&s=1000000000000000000&p=1"
+                #◘top10balance, totalsupply=top10_info(token_address)
+                finalmetin=sonucmetin+f"\n--Other Analyzer: https://etherscan.io/token/{token_address}#cards\nContrat Creator: {contractCreator}\nCreator Balance: {balance} ETH\nAll Holders: https://etherscan.io/token/tokenholderchart/{token_address}"
                 asyncio.run(send_elite_msg(finalmetin))
             break
         except Exception as e:
@@ -407,7 +520,7 @@ if __name__ == "__main__":
                 else:
                     creator_scan(token_address, sonucmetin)
                     time.sleep(30)
-                    asyncio.run(send_message(sonucmetin))
+                    #asyncio.run(send_message(sonucmetin))
                 break
     except Exception as e:
             print(f"Failed to connect!\n{e}")
