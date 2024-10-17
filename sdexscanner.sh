@@ -83,6 +83,7 @@ def add_token_and_call_checker(contract_address):
             os.system(f'start cmd /k "python linux_komut_gonderme.py --add={contract_address}"')
 
 async def listen_to_new_blocks():
+    warrningcount=0
     async with websockets.connect(ws_url) as websocket:
         while True:
             try:
@@ -94,6 +95,9 @@ async def listen_to_new_blocks():
                     break
             except Exception as e:
                 print(f"Failed to connect to Ethereum network.\n{e}")
+                warrningcount+=1
+                if warrningcount>200:
+                    os.system('shutdown -r now')
                 pass
         # Yeni blok başlıkları için abone olma
         await websocket.send(json.dumps({
@@ -113,7 +117,7 @@ async def listen_to_new_blocks():
                     block_number = int(block_header['number'], 16)  # Hexadecimal'den decimal'e çevir
                     block_hash = block_header['hash']
                     #print(f"Yeni blok: {block_number} (Hash: {block_hash})")
-                    print(f"{datetime.today().isoformat()}  Processing block: {block_number}")
+                    #print(f"{datetime.today().isoformat()}  Processing block: {block_number}")
                     block = web3.eth.get_block(block_hash, full_transactions=True)
                     for tx in block.transactions:
                         if tx['to'] is None:  # Contract creation transaction (no 'to' address)
@@ -121,7 +125,7 @@ async def listen_to_new_blocks():
                             contract_address = web3.eth.get_transaction_receipt(tx['hash']).contractAddress
                             #receipt
                             if contract_address:
-                                #os.system('cls')
+                                os.system('clear')
                                 print(f"{datetime.today().isoformat()}  New contract deployed at: {contract_address}")
                                 #check_token(contract_address)
                                 # Optional: Check if it's a token contract via Etherscan API
@@ -142,6 +146,10 @@ async def listen_to_new_blocks():
                                 add_token_and_call_checker(contract_address)
             except Exception as e:
                     print(e)
+                    warrningcount+=1
+                    time.sleep(1)
+                    if warrningcount>100:
+                        os.system('shutdown -r now')
                     continue
 
 # Asenkron dinleyici başlatma
