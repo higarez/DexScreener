@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import os, random, time, subprocess, requests,  json, sys,asyncio, websockets
 from web3 import Web3
 from datetime import datetime
