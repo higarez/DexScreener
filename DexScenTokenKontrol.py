@@ -520,7 +520,7 @@ if __name__ == "__main__":
                 else:
                     creator_scan(token_address, sonucmetin)
                     time.sleep(30)
-                    #asyncio.run(send_message(sonucmetin))
+                    asyncio.run(send_message(sonucmetin))
                 break
     except Exception as e:
             print(f"Failed to connect!\n{e}")
