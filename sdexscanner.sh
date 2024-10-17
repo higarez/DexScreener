@@ -108,6 +108,7 @@ URLS = ["https://mainnet.infura.io/v3/fa90fd8d679a401f8fd45a271760b987",
 
 
 def add_token_and_call_checker(contract_address):
+    try:
         try:
             with open("Subprocess.txt", "a") as f:
                 f.write(f"{datetime.today().isoformat()};{contract_address}\n")
@@ -123,16 +124,18 @@ def add_token_and_call_checker(contract_address):
         if hidden:
             
             subprocess.Popen(
-                [sys.executable, 'linux_komut_gonderme.py', f'--add={contract_address}'],
+                [sys.executable, '/root/DexScreener/linux_komut_gonderme.sh', f'--add={contract_address}'],
                 stdout=subprocess.DEVNULL,  # Standart çıktıyı sessize al
                 stderr=subprocess.DEVNULL,  # Hata çıktısını sessize al
             )
         else:
-            os.system(f'start cmd /k "python linux_komut_gonderme.py --add={contract_address}"')
-
+            os.system(f'/root/DexScreener/linux_komut_gonderme.sh --add={contract_address}')
+    except Exception as e:
+        print(f"Linuxa gönderilemedi Hata:\n{e}")
+        
 async def listen_to_new_blocks():
     warrningcount=0
-    async with websockets.connect(random.choice(URLS)) as websocket:
+    async with websockets.connect(random.choice(ws_url)) as websocket:
         while True:
             try:
                 web3 = Web3(Web3.HTTPProvider(random.choice(URLS)))        
@@ -164,8 +167,7 @@ async def listen_to_new_blocks():
                     block_header = response_data['params']['result']
                     block_number = int(block_header['number'], 16)  # Hexadecimal'den decimal'e çevir
                     block_hash = block_header['hash']
-                    #print(f"Yeni blok: {block_number} (Hash: {block_hash})")
-                    #print(f"{datetime.today().isoformat()}  Processing block: {block_number}")
+                    print(f"{datetime.today().isoformat()}  Processing block: {block_number}")
                     block = web3.eth.get_block(block_hash, full_transactions=True)
                     for tx in block.transactions:
                         if tx['to'] is None:  # Contract creation transaction (no 'to' address)
@@ -205,6 +207,9 @@ async def listen_to_new_blocks():
 if __name__ == "__main__":
     try:
         while True:
-            asyncio.run(listen_to_new_blocks())
+            try:
+                asyncio.run(listen_to_new_blocks())
+            except Exception as e:
+                print(f"Websokect Başlangıç Hatası\n{e}")
     except KeyboardInterrupt:
         print(f"{datetime.today().isoformat()}  \nDöngü sonlandırıldı.")
